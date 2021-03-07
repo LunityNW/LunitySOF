@@ -16,6 +16,6 @@ class Logger {
   public function inf($error) {
     echo "[ Info ]: " . $error;
   }
-
+}
 
 ?>
