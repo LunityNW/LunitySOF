@@ -5,7 +5,7 @@ namespace lunity\utils;
 class Logger {
   
   
-  public function inf($info) {
+  public function info($info) {
     echo "[ Info ]: " . $info;
   }
   
@@ -13,7 +13,7 @@ class Logger {
     echo "[ Info ]: " . $debug;
   }
   
-  public function inf($error) {
+  public function error($error) {
     echo "[ Info ]: " . $error;
   }
 }
