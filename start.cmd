@@ -1,3 +1,11 @@
-title LunitySOF
+@echo off
+@title LunitySof
 
-php 
+
+set PHP = bin\php\php.exe
+set LUNITYSOF = Start.php
+
+bin\php\php.exe Start.php
+
+PAUSE
+
