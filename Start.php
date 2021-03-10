@@ -18,17 +18,20 @@
 namespace lunity{
     use lunity\LunitySof;
     use lunity\utils\Loader;
+    use lunity\utils\Logger;
+    
 
     require_once(__DIR__ . "/src/lunity/utils/Loader.php");
 
     $loader = new Loader();
     $loader->addPath(__DIR__ . "/src");
     $loader->register();
+    $logger = new Logger();
     
 
     if(php_sapi_name() === "cli"){
-        $class = new LunitySof();
-        $class->getLogger()->info("Thank you for using MCBEProxy by Hmy2001!");
+        $class = new LunitySof($logger);
+        echo "Corriendo Servidor";
     }else{
         echo "It cannot start from web.<br> Please start from a command-line<br>";
     }
