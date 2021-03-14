@@ -24,7 +24,7 @@ class UDPSocket {
 
 
        
-        if (@socket_bind($this->socket, $address, $port)) {
+        if (@socket_bind($this->socket, $address, $port) === true) {
              $this->main->getLogger()->info("socket creado correctamente");
         }
 
