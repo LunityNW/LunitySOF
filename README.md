@@ -1,2 +1,2 @@
 # LunitySOF
-Lunity Software,
+Minecraft Bedrock server software
