@@ -9,12 +9,11 @@
 namespace lunity\network\raklib;
 
 use lunity\LunitySof;
+use lunity\network\raklib\UDPSocket;
 use lunity\network\raklib\packet\UNCONNECTED_PING;
 use lunity\network\raklib\packet\UNCONNECTED_PONG;
 
 class SessionManager {
-
-
 
     protected $main;
     protected $socket;
@@ -67,8 +66,6 @@ class SessionManager {
         return (is_numeric($this->serverID)) ? $this->serverID : $this->serverID = rand(0, PHP_INT_MAX);
     }
 
-    
-
     public function getServerIP() {
         return $this->addres;
     }
@@ -76,7 +73,5 @@ class SessionManager {
     public function getServerPort(): int {
         return $this->addres;
     }
-
-
 }
 ?>
