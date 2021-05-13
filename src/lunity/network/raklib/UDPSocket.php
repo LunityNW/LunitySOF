@@ -17,18 +17,22 @@ class UDPSocket {
     public $socket;
     /** LunitySof $main */
     public $main;
+    /** UDPScoket $instance */
+    public static $instance;
 
-    public function __construct(LunitySof $main ,$address, $port) {
+    public function __construct(LunitySof $main ,$address = "0.0.0.0", $port = 19132) {
+        self::$instance = $this;
         $this->main = $main;
         $this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
-
-       
         if (@socket_bind($this->socket, $address, $port) === true) {
-             $this->main->getLogger()->info("socket creado correctamente");
+             $this->main->getLogger()->info("socket created successfully");
         }
-
-        
+     
+    }
+    
+    public static function getInstance(): UDPScoket {
+        return self::$instance;
     }
 
     public function recive(&$buffer, &$address, &$port) {
@@ -41,7 +45,7 @@ class UDPSocket {
 
     public function close() {
         socket_close($this->socket);
-        $this->main->getLogger()->debug("socket cerrado");
+        $this->main->getLogger()->debug("socket closed");
     }
 
 }
