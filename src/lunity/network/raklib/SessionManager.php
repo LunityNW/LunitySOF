@@ -50,7 +50,7 @@ class SessionManager {
                 $pk = new UNCONNECTED_PONG();
                 $pk->pingID = $packet->pingID;
                 $pk->serverID = $this->getServerID();
-                $pk->serverName = "MCPE;LunitySOF;408;1.16.40;0;60;survival";
+                $pk->serverName = "MCPE;LunitySOF;408;1.16.40;0;60;survival;lunity";
                 $pk->encode();
                 $this->sendPacket($pk->buffer, $address, $port);
                 
