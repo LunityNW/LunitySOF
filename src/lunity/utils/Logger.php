@@ -15,15 +15,15 @@ class Logger {
   
   
   public function info($info) {
-    echo Terminal::YELLOW . "[ Info ]: " . $info . PHP_EOL;
+    echo Terminal::YELLOW . "[ Info ] " . "» " . Terminal::YELLOW . $info . PHP_EOL;
   }
   
   public function debug($debug) {
-    echo Terminal::GREEN . "[ Debug ]: " . $debug . PHP_EOL;
+    echo Terminal::GREEN . "[ Debug ] " . "» " . Terminal::YELLOW . $debug . PHP_EOL;
   }
   
   public function error($error) {
-    echo Terminal::RED . "[ Error ]: " . $error . PHP_EOL;
+    echo Terminal::RED . "[ Error ] " . "» " . Terminal::YELLOW . $error . PHP_EOL;
   }
 }
 

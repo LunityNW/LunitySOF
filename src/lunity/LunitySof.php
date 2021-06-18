@@ -8,8 +8,9 @@
 
 namespace lunity;
 
+use lunity\network\packet\ReadPackets;
 use lunity\network\raklib\UDPSocket;
-use lunity\network\raklib\SessionManager;
+use lunity\network\SessionManager;
 use lunity\utils\Logger;
 
 
@@ -19,22 +20,26 @@ class LunitySof {
     public $logger;
     public $socket;
     public $sessionManager;
+    public $serverID;
   
     public function __construct(Logger $logger) {
         $this->logger = new Logger();
         $this->socket = new UDPSocket($this, "0.0.0.0", 19132);
-        $this->sessionManager = new SessionManager($this, $this->socket, "0.0.0.0", 19132);
-        $this->logger->info("corriendo");
+        $this->sessionManager = new SessionManager($this);
+        $this->readPackets = new ReadPackets($this, $this->socket);
+        $this->logger->info("Iniciando LunitySof...");
         $this->init();
     }
 
 
     public function init() {
-
-        while($this->work){
-           $this->sessionManager->init();
+        while($this->work) {
+            $this->sessionManager->init();
         }
-        
+    }
+
+    public function getServerID() {
+        return is_numeric($this->serverID) ? $this->serverID : $this->serverID = mt_rand(0, PHP_INT_MAX);
     }
 
     public function isWorking() {

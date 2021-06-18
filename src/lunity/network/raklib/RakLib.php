@@ -26,7 +26,7 @@ abstract class RakLib{
 	 * Default vanilla Raknet protocol version that this library implements. Things using RakNet can override this
 	 * protocol version with something different.
 	 */
-	public const DEFAULT_PROTOCOL_VERSION = 6;
+	public const DEFAULT_PROTOCOL_VERSION = 10;
 	public const MAGIC = "\x00\xff\xff\x00\xfe\xfe\xfe\xfe\xfd\xfd\xfd\xfd\x12\x34\x56\x78";
 
 	public const PRIORITY_NORMAL = 0;
