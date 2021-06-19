@@ -6,7 +6,9 @@ namespace lunity\network\packet;
 
 use lunity\LunitySof;
 use lunity\network\packet\raknet\OpenConnectionReply1;
+use lunity\network\packet\raknet\OpenConnectionReply2;
 use lunity\network\packet\raknet\OpenConnectionRequest1;
+use lunity\network\packet\raknet\OpenConnectionRequest2;
 use lunity\network\packet\raknet\UnconnectedPing;
 use lunity\network\packet\raknet\UnconnectedPong;
 use lunity\network\raklib\UDPSocket;
@@ -24,7 +26,7 @@ class ReadPackets {
     public function readPackets($buff, $addres, $port) {
         $id = ord($buff{0});
 
-        $this->main->getLogger()->info("se recivio el packetes: " . $id);
+        $this->main->getLogger()->info("se recivio el packet: " . $id);
 
         switch ($id) {
             case UnconnectedPing::$id:
@@ -51,6 +53,23 @@ class ReadPackets {
 
                 $this->sendPacket($reply1->buffer, $addres, $port);
             break;
+            case OpenConnectionRequest2::$id:
+                $packet = new OpenConnectionRequest2();
+                $packet->buffer = $buff;
+                $packet->decode();
+
+                $reply2 = new OpenConnectionReply2();
+                $reply2->serverID = $this->main->getServerID();
+                $reply2->address = $packet->address;
+                $reply2->port = $packet->port;
+                $reply2->mtu = min(1464, $packet->mtu);
+                $reply2->encode();
+
+                $this->sendPacket($reply2->buffer, $addres, $port);
+            break;
+        }
+        if ($id >= 0x80 and $id <= 0x8d ) {
+            $this->main->getLogger()->debug("el packete: " . $id . " es un FramePacket");
         }
     }
 
