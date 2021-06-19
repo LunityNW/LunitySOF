@@ -28,6 +28,14 @@ class LunitySof {
         $this->sessionManager = new SessionManager($this);
         $this->readPackets = new ReadPackets($this, $this->socket);
         $this->logger->info("Iniciando LunitySof...");
+        $this->logger->info("
+  _                _ _         ____   ___  _____ 
+ | |   _   _ _ __ (_| |_ _   _/ ___| / _ \|  ___|
+ | |  | | | | '_ \| | __| | | \___ \| | | | |_   
+ | |__| |_| | | | | | |_| |_| |___) | |_| |  _|  
+ |_____\__,_|_| |_|_|\__|\__, |____/ \___/|_|    
+                         |___/                   
+");
         $this->init();
     }
 

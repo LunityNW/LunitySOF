@@ -5,6 +5,7 @@ namespace lunity\network\packet;
 
 
 use lunity\LunitySof;
+use lunity\network\packet\raknet\OpenConnectionReply1;
 use lunity\network\packet\raknet\OpenConnectionRequest1;
 use lunity\network\packet\raknet\UnconnectedPing;
 use lunity\network\packet\raknet\UnconnectedPong;
@@ -43,7 +44,12 @@ class ReadPackets {
                 $packet->buffer = $buff;
                 $packet->decode();
 
-                $this->main->getLogger()->debug("su protocolo es " . $packet->protocol);
+                $reply1 = new OpenConnectionReply1();
+                $reply1->serverID = $this->main->getServerID();
+                $reply1->mtu = $packet->mtu;
+                $reply1->encode();
+
+                $this->sendPacket($reply1->buffer, $addres, $port);
             break;
         }
     }

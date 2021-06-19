@@ -44,6 +44,14 @@ abstract class Packet
         $this->buffer .= RakLib::MAGIC;
     }
 
+    public function put($n) {
+        $this->buffer .= chr($n);
+    }
+
+    public function putByte($byte) {
+        $this->buffer .= chr($byte);
+    }
+
 
     /**
      * @param $len
