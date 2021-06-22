@@ -55,16 +55,4 @@ class BatchPacket extends Packet
 	public function encode(): void{
 		$this->buffer = chr(0xfe) . zlib_encode($this->buffer, ZLIB_ENCODING_RAW, 6);
 	}
-
-	public function handle(Session $session): void{
-		$this->buffer = $this->decode();
-		if($this->buffer == null) return;
-		
-		$this->offset = 0;
-
-		foreach($this->getPackets() as $pk){
-			//var_dump(bin2hex($pk));
-			//$session->handlePacket($pk);
-		}
-	}
 }

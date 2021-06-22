@@ -2,7 +2,10 @@
 
 /** 
  * 
- * LunityNW © 2021 - 2023 
+ * LunityNW ©
+ *
+ *  _                 _ _          _____  ____  ______
+ * 
  * 
  */
 
@@ -10,7 +13,7 @@ namespace lunity;
 
 use lunity\network\packet\ReadPackets;
 use lunity\network\raklib\UDPSocket;
-use lunity\network\SessionManager;
+use lunity\network\server\SessionManager;
 use lunity\utils\Logger;
 
 
