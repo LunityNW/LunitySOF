@@ -110,7 +110,6 @@ class Session {
                 $reply2->port = $requiest2->port;
                 $reply2->mtu = min(1464, $requiest2->mtu);
                 $reply2->encode();
-
                 $this->sendPacket($reply2->buffer);
                 break;
         }
