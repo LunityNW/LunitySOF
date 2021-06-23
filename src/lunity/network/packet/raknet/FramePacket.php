@@ -12,7 +12,6 @@
  * @link https://github.com/encluced
  * @link https://github.com/WertexTeam/wertex
 */
-
 namespace lunity\network\packet\raknet;
 
 use lunity\network\raklib\Binary;

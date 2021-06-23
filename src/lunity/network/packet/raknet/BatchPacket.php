@@ -15,17 +15,16 @@
 
 namespace lunity\network\packet\raknet;
 
-use wertex\session\Session;
-use wertex\binary\Binary;
+use lunity\network\raklib\Binary;
+use lunity\network\packet\Packet;
 
-class BatchPacket extends Packet
-{
+class BatchPacket extends Packet {
 	public static $id = 0xfe;
 
-	/**
-	 * @return Zlib-decoded string buffer
-	*/
-	public function decode(): string{
+    /**
+     * @return string
+     */
+	public function decode(): string {
 		$payload = "";
 
 		try {
@@ -35,9 +34,9 @@ class BatchPacket extends Packet
 		return $payload;
 	}
 
-	/**
-	 * @return Decoded packets
-	*/
+    /**
+     * @return array
+     */
 	public  function getPackets(): array{
 		$packets = [];
 

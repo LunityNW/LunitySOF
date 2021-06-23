@@ -6,12 +6,13 @@
  * 
  */
 
-namespace lunity\network\raklib;
+namespace lunity\network\server;
 
 use lunity\LunitySof;
 use lunity\network\raklib\UDPSocket;
 use lunity\network\raklib\packet\UNCONNECTED_PING;
 use lunity\network\raklib\packet\UNCONNECTED_PONG;
+use lunity\network\server\Session;
 
 class SessionManager {
 
@@ -51,6 +52,40 @@ class SessionManager {
     }
 
     /**
+     * @param $address
+     * @param $port
+     * @return Session
+     */
+    public function getSession($address, $port) {
+        return $this->sessions["$address:$port"];
+    }
+
+    /**
+     * @param $address
+     * @param $port
+     * @return bool
+     */
+    public function isSession($address, $port) {
+        return isset($this->sessions["$address:$port"]);
+    }
+
+    /**
+     * @param $address
+     * @param $port
+     */
+    public function addSession($address, $port) {
+        $this->sessions["$address:$port"] = new Session($this, $address, $port);
+    }
+
+    /**
+     * @return LunitySof
+     */
+    public function getMain(): LunitySof {
+        return $this->main;
+    }
+
+    /**
+     *
      * @return \lunity\network\raklib\UDPSocket
      */
     public function getSocket(): \lunity\network\raklib\UDPSocket {

@@ -11,6 +11,7 @@ use lunity\network\packet\raknet\OpenConnectionRequest1;
 use lunity\network\packet\raknet\OpenConnectionRequest2;
 use lunity\network\packet\raknet\UnconnectedPing;
 use lunity\network\packet\raknet\UnconnectedPong;
+use lunity\network\server\SessionManager;
 use lunity\network\raklib\UDPSocket;
 
 class ReadPackets {
@@ -42,6 +43,12 @@ class ReadPackets {
             $this->sendPacket($pong->buffer, $addres, $port);
             break;
             case OpenConnectionRequest1::$id:
+                if (!$this->getSessionManager()->isSession($addres, $port)) {
+                    $this->getSessionManager()->addSession($addres, $port);
+                }
+
+                $this->getSessionManager()->getSession($addres, $port)->procesConnection($buff);
+
                 $packet = new OpenConnectionRequest1();
                 $packet->buffer = $buff;
                 $packet->decode();
@@ -54,6 +61,7 @@ class ReadPackets {
                 $this->sendPacket($reply1->buffer, $addres, $port);
             break;
             case OpenConnectionRequest2::$id:
+
                 $packet = new OpenConnectionRequest2();
                 $packet->buffer = $buff;
                 $packet->decode();
@@ -73,6 +81,19 @@ class ReadPackets {
         }
     }
 
+    /**
+     * @return LunitySof
+     */
+    public function getMain(): LunitySof {
+        return $this->main;
+    }
+
+    /**
+     * @return SessionManager
+     */
+    public function getSessionManager(): SessionManager {
+        return $this->getMain()->sessionManager;
+    }
     public function sendPacket($buff, $addres, $port) {
         $this->socket->send($buff, $addres, $port);
     }
