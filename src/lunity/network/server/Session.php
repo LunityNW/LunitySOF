@@ -72,6 +72,7 @@ class Session {
             $packet = $pack[0];
             $settings = $pack[1];
             $id = ord($packet{0}); //packet ID
+            $this->getMain()->getLogger()->debug("se recibio un FramePacket con id: " . $id );
 
             switch ($id) {
                 case BatchPacket::$id:
@@ -122,6 +123,7 @@ class Session {
 
         foreach ($pack->getPackets() as $packet) {
             $id = ord($packet{0});
+            $this->getMain()->getLogger()->debug("se recibio un BatchPacket con id: " . $id );
         }
     }
 
