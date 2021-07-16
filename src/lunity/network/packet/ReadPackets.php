@@ -18,6 +18,7 @@ class ReadPackets {
 
     protected $main;
     protected $socket;
+    protected $sessionManager;
 
     public function __construct(LunitySof $main, UDPSocket $socket) {
         $this->main = $main;
@@ -26,8 +27,6 @@ class ReadPackets {
 
     public function readPackets($buff, $addres, $port) {
         $id = ord($buff{0});
-
-        $this->main->getLogger()->info("se recivio el packet: " . $id);
 
         switch ($id) {
             case UnconnectedPing::$id:
@@ -48,36 +47,16 @@ class ReadPackets {
                 }
 
                 $this->getSessionManager()->getSession($addres, $port)->procesConnection($buff);
-
-                $packet = new OpenConnectionRequest1();
-                $packet->buffer = $buff;
-                $packet->decode();
-
-                $reply1 = new OpenConnectionReply1();
-                $reply1->serverID = $this->main->getServerID();
-                $reply1->mtu = $packet->mtu;
-                $reply1->encode();
-
-                $this->sendPacket($reply1->buffer, $addres, $port);
             break;
             case OpenConnectionRequest2::$id:
-
-                $packet = new OpenConnectionRequest2();
-                $packet->buffer = $buff;
-                $packet->decode();
-
-                $reply2 = new OpenConnectionReply2();
-                $reply2->serverID = $this->main->getServerID();
-                $reply2->address = $packet->address;
-                $reply2->port = $packet->port;
-                $reply2->mtu = min(1464, $packet->mtu);
-                $reply2->encode();
-
-                $this->sendPacket($reply2->buffer, $addres, $port);
+                if ($this->getSessionManager()->isSession($addres, $port)) {
+                    $this->getSessionManager()->getSession($addres, $port)->procesConnection($buff);
+                }
             break;
         }
         if ($id >= 0x80 and $id <= 0x8d ) {
             $this->main->getLogger()->debug("el packete: " . $id . " es un FramePacket");
+	    $this->getSessionManager()->getSession($addres, $port)->handle($buff);
         }
     }
 
