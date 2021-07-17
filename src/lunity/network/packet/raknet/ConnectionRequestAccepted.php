@@ -10,7 +10,7 @@ class ConnectionRequestAccepted extends Packet {
     public $address;
     public $port;
     public $systemindex = 0;
-    public $internalId = "127.0.0.1";
+    public $internalId = "255.255.255.255";
     public $ping;
 
 
