@@ -17,6 +17,7 @@ namespace lunity\network\packet\raknet;
 
 use lunity\network\raklib\Binary;
 use lunity\network\packet\Packet;
+use lunity\network\server\Session;
 
 class BatchPacket extends Packet {
 	public static $id = 0xfe;
@@ -24,34 +25,46 @@ class BatchPacket extends Packet {
     /**
      * @return string
      */
-	public function decode(): string {
-		$payload = "";
+    public function decode(): string{
+        $payload = "";
 
-		try {
-			$payload = zlib_decode(substr($this->buffer, 1), 1024 * 1024 * 2);
-		} catch(\ErrorException $e){}
+        try {
+            $payload = zlib_decode(substr($this->buffer, 1), 1024 * 1024 * 2);
+        } catch(\ErrorException $e){}
 
-		return $payload;
-	}
+        return $payload;
+    }
 
     /**
-     * @return array
+     * @return Decoded packets
      */
-	public  function getPackets(): array{
-		$packets = [];
+    public  function getPackets(): array{
+        $packets = [];
 
-		while(isset($this->buffer{$this->offset})){
-			$packets[] = $this->get(Binary::readUnsignedVarInt($this->buffer, $this->offset));
-		}
+        while(isset($this->buffer{$this->offset})){
+            $packets[] = $this->get(Binary::readUnsignedVarInt($this->buffer, $this->offset));
+        }
 
-		return $packets;
-	}
+        return $packets;
+    }
 
-	public function addPacket(string $buffer): void{
-		$this->buffer .= Binary::writeUnsignedVarInt(strlen($buffer)) . $buffer;
-	}
+    public function addPacket(string $buffer): void{
+        $this->buffer .= Binary::writeUnsignedVarInt(strlen($buffer)) . $buffer;
+    }
 
-	public function encode(): void{
-		$this->buffer = chr(0xfe) . zlib_encode($this->buffer, ZLIB_ENCODING_RAW, 6);
-	}
+    public function encode(): void{
+        $this->buffer = chr(0xfe) . zlib_encode($this->buffer, ZLIB_ENCODING_RAW, 6);
+    }
+
+    public function handle(Session $session): void{
+        $this->buffer = $this->decode();
+        if($this->buffer == null) return;
+
+        $this->offset = 0;
+
+        foreach($this->getPackets() as $pk){
+            //var_dump(bin2hex($pk));
+            $session->batchHandler($pk);
+        }
+    }
 }

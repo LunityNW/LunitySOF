@@ -144,12 +144,14 @@ class Session {
             $packet = $pack[0];
             $settings = $pack[1];
             $id = ord($packet{0}); //packet ID
-            $this->getMain()->getLogger()->debug("se recibio un FramePacket con id: " . $id );
+            $this->getMain()->getLogger()->debug("se recibio un FramePacket con id: " . $id);
 
             switch ($id) {
                 case BatchPacket::$id:
-                    $this->getMain()->getLogger()->debug("se recibio un BatchPaket");
-                    $this->batchHandler($packet);
+                    $batchPacket = new BatchPacket();
+                    $batchPacket->buffer = $packet;
+                    $batchPacket->offset = 1;
+                    $batchPacket->handle($this);
                 break;
 		        case ConnectionRequest::$id:
                     $this->procesConnection($packet);
@@ -221,14 +223,8 @@ class Session {
     }
 
     public function batchHandler($buffer) {
-        $pack = new BatchPacket();
-        $pack->buffer = $buffer;
-        $pack->decode();
-
-        foreach ($pack->getPackets() as $packet) {
-            $id = ord($packet{0});
-            $this->getMain()->getLogger()->debug("se recibio un BatchPacket con id: " . $id );
-        }
+        $id = ord($buffer{0});
+        $this->getMain()->getLogger()->debug("se recibio un BatchPacket con id: " . $id );
     }
 
     public function getMain(): LunitySof {
