@@ -29,7 +29,7 @@ class BatchPacket extends Packet {
         $payload = "";
 
         try {
-            $payload = zlib_decode(substr($this->buffer, 1), 1024 * 1024 * 2);
+            $payload = zlib_decode(substr($this->buffer, 1));
         } catch(\ErrorException $e){}
 
         return $payload;
