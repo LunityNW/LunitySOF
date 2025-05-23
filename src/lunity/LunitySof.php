@@ -15,8 +15,6 @@ use lunity\network\packet\ReadPackets;
 use lunity\network\raklib\UDPSocket;
 use lunity\network\server\SessionManager;
 use lunity\utils\Logger;
-
-
 class LunitySof {
 
     public $work = true;
